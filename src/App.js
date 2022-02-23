@@ -4,6 +4,8 @@ import Auth from "./pages/Auth";
 import Shop from "./pages/Shop";
 import Cart from "./pages/Cart";
 
+// App components
+
 function App() {
   return (
     <Layout>
