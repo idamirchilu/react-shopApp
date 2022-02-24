@@ -39,41 +39,62 @@ const cartSlice = createSlice({
   },
 });
 
-export const fetchCartData = () => {
+export const fetchCartData = (id) => {
   return async (dispatch) => {
-    try {
-      const res = await fetch(
-        "https://redux-cart-420f0-default-rtdb.firebaseio.com/usres/cart.json"
-      );
-      const data = await res.json();
+    if (!!id !== false) {
+      const identifire = id
+        .split("@")[0]
+        .split("")
+        .filter(
+          (item) =>
+            !Number(item) && item !== "." && item !== "_" && item !== "-"
+        )
+        .join("");
+      try {
+        const res = await fetch(
+          `https://redux-cart-420f0-default-rtdb.firebaseio.com/${identifire}.json`
+        );
+        const data = await res.json();
 
-      if (data) {
-        console.log(data);
-        dispatch(cartSlice.actions.replaceItems(data));
-      } else {
-        dispatch(cartSlice.actions.replaceItems([]));
+        if (!res.ok) throw new Error("failed to fetch cart data");
+
+        if (data) {
+          dispatch(cartSlice.actions.replaceItems(data));
+        } else {
+          dispatch(cartSlice.actions.replaceItems([]));
+        }
+      } catch (err) {
+        console.log(err.message);
       }
-    } catch (err) {
-      console.log(err.message);
     }
   };
 };
 
-export const sendCartData = (cartData) => {
-  return async (dispatch) => {
-    try {
-      const res = await fetch(
-        "https://redux-cart-420f0-default-rtdb.firebaseio.com/users/cart.json",
-        {
-          method: "PUT",
-          body: JSON.stringify(cartData),
+export const sendCartData = (cartData, id) => {
+  return async () => {
+    if (!!id !== false) {
+      const identifire = id
+        .split("@")[0]
+        .split("")
+        .filter(
+          (item) =>
+            !Number(item) && item !== "." && item !== "_" && item !== "-"
+        )
+        .join("");
+      try {
+        const res = await fetch(
+          `https://redux-cart-420f0-default-rtdb.firebaseio.com/${identifire}.json`,
+          {
+            method: "PUT",
+            body: JSON.stringify(cartData),
+          }
+        );
+        if (!res.ok) {
+          throw new Error("failed to send cart data");
         }
-      );
-      if (!res.ok) {
-        throw new Error("error");
+      } catch (err) {
+        console.log(err.message);
       }
-    } catch (err) {
-      console.log(err.message);
     }
   };
 };

@@ -1,6 +1,6 @@
 import Card from "../UI/Card";
 import classes from "./ProductItem.module.css";
-import { Fragment, useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { cartActions } from "../../store/cart-slice";
 import { sendCartData } from "../../store/cart-slice";
@@ -20,7 +20,7 @@ const ProductItem = ({ productData }) => {
   }, [dispatch]);
 
   return (
-    <Fragment>
+    <div className={classes["list-container"]}>
       {productData.map((item) => {
         return (
           <li key={item.id} className={classes.item}>
@@ -33,7 +33,7 @@ const ProductItem = ({ productData }) => {
               <div className={classes.actions}>
                 <button
                   onClick={() => {
-                    if (!authState.userIsLogin) {
+                    if (!authState.isLoggedIn) {
                       alert("Please Frist Login");
                       return;
                     }
@@ -54,7 +54,7 @@ const ProductItem = ({ productData }) => {
           </li>
         );
       })}
-    </Fragment>
+    </div>
   );
 };
 

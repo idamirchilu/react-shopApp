@@ -28,16 +28,16 @@ const MainNavigation = () => {
           </li>
           <li>
             <Link to="/cart">
-              Cart<span>{state.userIsLogin && totalQuantity}</span>
+              Cart<span>{state.isLoggedIn && totalQuantity}</span>
             </Link>
           </li>
-          {!state.userIsLogin && (
+          {!state.isLoggedIn && (
             <li>
               <Link to="/auth">Login/register</Link>
             </li>
           )}
           <li>
-            {state.userIsLogin && (
+            {state.isLoggedIn && (
               <button onClick={logoutHandler}>Logout</button>
             )}
           </li>
